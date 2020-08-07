@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
@@ -28,6 +30,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -45,9 +48,46 @@ const userSchema = new mongoose.Schema(
     municipalRegistration: {
       type: String,
     },
+    tokens: [
+      {
+        token: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
+
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("Invalid user");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error("Invalid password");
+  }
+  return user;
+};
+
+userSchema.methods.generateJwtToken = async function () {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, "secret");
+
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+
+  return token;
+};
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 

@@ -33,7 +33,8 @@ const postUser = async (req, res) => {
     req.body.addressId = address._id;
     const user = new User(req.body);
     await user.save();
-    res.status(201).send(user);
+    const token = await user.generateJwtToken();
+    res.status(201).send({ user, token });
   } catch (error) {
     res.status(500).send(error);
   }

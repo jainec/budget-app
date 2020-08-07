@@ -9,6 +9,7 @@ const unityTypeRouter = require("./routes/unityTypes");
 const userRouter = require("./routes/users");
 const productRouter = require("./routes/products");
 const budgetRouter = require("./routes/budgets");
+const authRouter = require("./routes/auth");
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ app.use("/unityTypes", unityTypeRouter);
 app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/budgets", budgetRouter);
+app.use("/auth", authRouter);
 
 app.listen(3002, () => {
   console.log("Server running on port 3002");
