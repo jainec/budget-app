@@ -6,16 +6,17 @@ const {
   deleteBudget,
   sendBudgetToEmail,
 } = require("../controllers/BudgetController");
+const auth = require("../middlewares/auth");
 const router = express.Router();
 
-router.get("/", getBudgets);
+router.get("/", auth, getBudgets);
 
-router.get("/:id", getBudget);
+router.get("/:id", auth, getBudget);
 
-router.post("/", postBudget);
+router.post("/", auth, postBudget);
 
-router.delete("/:id", deleteBudget);
+router.delete("/:id", auth, deleteBudget);
 
-router.post("/:id/sendBudgetToEmail", sendBudgetToEmail);
+router.post("/:id/sendBudgetToEmail", auth, sendBudgetToEmail);
 
 module.exports = router;

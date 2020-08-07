@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
+const auth = require("../middlewares/auth");
 const router = express.Router();
-const { getUnityTypes } = require('../controllers/UnityTypeController');
+const { getUnityTypes } = require("../controllers/UnityTypeController");
 
-router.get('/', getUnityTypes);
+router.get("/", auth, getUnityTypes);
 
 module.exports = router;

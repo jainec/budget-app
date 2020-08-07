@@ -1,4 +1,3 @@
-const expree = require("express");
 const express = require("express");
 const auth = require("../middlewares/auth");
 const {
