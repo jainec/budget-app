@@ -4,11 +4,27 @@ const City = require("../../models/City");
 const data = [
   {
     name: "Nomeinventado",
-    stateId: "5f2db0a872343507c5dc0ba2",
+    stateId: "5f319ceea448c60cd60baf2f",
   },
   {
     name: "Cidade do amor",
-    stateId: "5f2db0a872343507c5dc0ba2",
+    stateId: "5f319ceea448c60cd60baf2f",
+  },
+  {
+    name: "Estância",
+    stateId: "5f319ceea448c60cd60baf2f",
+  },
+  {
+    name: "Aracaju",
+    stateId: "5f319ceea448c60cd60baf2f",
+  },
+  {
+    name: "Brasília",
+    stateId: "5f319ceea448c60cd60baf2f",
+  },
+  {
+    name: "São Paulo",
+    stateId: "5f319ceea448c60cd60baf2f",
   },
 ];
 

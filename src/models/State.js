@@ -13,6 +13,12 @@ const stateSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+stateSchema.methods.toJSON = function () {
+  const state = this.toObject();
+  delete state.__v;
+  return state;
+};
+
 const State = mongoose.model("State", stateSchema);
 
 module.exports = State;
