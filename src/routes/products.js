@@ -8,12 +8,17 @@ const {
   deleteProduct,
 } = require("../controllers/ProductController");
 const router = express.Router();
+const multer = require("multer");
+
+const upload = multer({
+  dest: "productsImages",
+});
 
 router.get("/", auth, getProducts);
 
 router.get("/:id", auth, getProduct);
 
-router.post("/", auth, postProduct);
+router.post("/", auth, upload.single("image"), postProduct);
 
 router.patch("/:id", auth, patchProduct);
 

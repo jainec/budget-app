@@ -24,6 +24,4 @@ app.use("/products", productRouter);
 app.use("/budgets", budgetRouter);
 app.use("/auth", authRouter);
 
-app.listen(3002, () => {
-  console.log("Server running on port 3002");
-});
+module.exports = app;

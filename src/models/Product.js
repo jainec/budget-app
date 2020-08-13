@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
     unityTypeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "UnityType",
-      //required: true,
+      required: true,
     },
     name: {
       type: String,
@@ -27,9 +27,27 @@ const productSchema = new mongoose.Schema(
     observations: {
       type: String,
     },
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+    images: [
+      {
+        type: Buffer,
+      },
+    ],
   },
   { timestamps: true }
 );
+
+productSchema.methods.toJSON = function () {
+  const product = this.toObject();
+  delete product.__v;
+  delete product.images;
+  return product;
+};
 
 const Product = mongoose.model("Product", productSchema);
 

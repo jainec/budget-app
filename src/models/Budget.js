@@ -10,9 +10,32 @@ const budgetSchema = new mongoose.Schema(
     totalPrice: {
       type: Number,
     },
+    products: [
+      {
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+        quantity: {
+          type: Number,
+        },
+        meters: {
+          type: Number,
+        },
+        price: {
+          type: Number,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
+
+budgetSchema.methods.toJSON = function () {
+  const budget = this.toObject();
+  delete budget.__v;
+  return budget;
+};
 
 const Budget = mongoose.model("Budget", budgetSchema);
 
