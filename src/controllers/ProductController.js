@@ -35,8 +35,11 @@ const getProduct = async (req, res) => {
 const postProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
-    const buffer = await sharp(req.file.path).png().toBuffer();
-    product.images.push(buffer);
+    const buffers = req.files.map(async (image) => {
+      const buffer = await sharp(image.path).png().toBuffer();
+      product.images.push(buffer);
+    });
+    await Promise.all(buffers);
     await product.save();
     res.send(product);
   } catch (error) {

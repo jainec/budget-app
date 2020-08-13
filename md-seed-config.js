@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const UnityTypes = require("./src/database/seeders/unity-types.seeder");
 const States = require("./src/database/seeders/states.seeder");
 const Cities = require("./src/database/seeders/cities.seeder");
+const Categories = require("./src/database/seeders/categories.seeder");
 
 const mongoURL = process.env.MONGO_URL || "mongodb://localhost/budget-app";
 
@@ -14,6 +15,7 @@ seedersList = {
   UnityTypes,
   States,
   Cities,
+  Categories,
 };
 /**
  * Connect to mongodb implementation

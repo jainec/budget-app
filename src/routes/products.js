@@ -18,7 +18,7 @@ router.get("/", auth, getProducts);
 
 router.get("/:id", auth, getProduct);
 
-router.post("/", auth, upload.single("image"), postProduct);
+router.post("/", auth, upload.array("images"), postProduct);
 
 router.patch("/:id", auth, patchProduct);
 

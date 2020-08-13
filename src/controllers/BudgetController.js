@@ -41,6 +41,11 @@ const postBudget = async (req, res) => {
     if (req.body.products) {
       for (item of req.body.products) {
         const product = await Product.findById(item.product);
+        if (!product) {
+          return res
+            .status(404)
+            .send({ error: "Product (" + item.product + ") not found" });
+        }
         let price = parseInt(product.price) * item.quantity;
         item.price = price;
         totalPrice += price;
