@@ -10,7 +10,7 @@ const login = async (req, res) => {
     const token = await user.generateJwtToken();
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send({ error: "Invalid credentials" });
   }
 };
 

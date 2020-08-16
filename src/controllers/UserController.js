@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Address = require("../models/Address");
+const bcrypt = require("bcryptjs/dist/bcrypt");
 
 const getUsers = async (req, res) => {
   try {
@@ -86,6 +87,9 @@ const patchUser = async (req, res) => {
         .send({ error: "O CNPJ é obrigatório para usuários do tipo PF." });
     }
 
+    if (req.body.password) {
+      req.body.password = await bcrypt.hash(req.body.password, 8);
+    }
     const user = await User.findOneAndUpdate({ _id: req.params.id }, req.body);
 
     if (!user) {
