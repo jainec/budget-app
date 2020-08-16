@@ -1,28 +1,69 @@
 const request = require("supertest");
 const app = require("../src/app");
+const { category1, category2, user, setupDatabase } = require("./fixtures/db");
 const Category = require("../src/models/Category");
-const { user, setupDatabase } = require("./fixtures/db");
 
-beforeEach(async () => {
-  setupDatabase();
-  await Category.deleteMany();
+beforeEach(setupDatabase);
+
+test("Should get all categories", async () => {
+  const response = await request(app)
+    .get("/categories")
+    .set("Authorization", `Bearer ${user.tokens[0].token}`);
+
+  expect(response.body).toMatchObject([
+    {
+      name: category2.name,
+    },
+    {
+      name: category1.name,
+    },
+  ]);
 });
 
-test("Should create a new category", async () => {
+test("Should get a category", async () => {
+  const response = await request(app)
+    .get(`/categories/${category1._id}`)
+    .set("Authorization", `Bearer ${user.tokens[0].token}`);
+
+  expect(response.body).toMatchObject({
+    name: category1.name,
+  });
+});
+
+test("Should post a category", async () => {
   const response = await request(app)
     .post("/categories")
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .send({
-      name: "Tecnologia",
+      name: "Eletrônicos",
     });
 
-  expect(response.status).toEqual(201);
-  const category = Category.findById({ _id: response.body._id });
-  expect(category).not.toBeNull();
-
-  expect(response.body.name).toBe("Tecnologia");
-
-  expect(response.body).toMatchObject({
+  expect(response.status).toBe(201);
+  expect(response.body).toEqual({
+    _id: response.body._id,
     name: response.body.name,
   });
+});
+
+test("Should update a category", async () => {
+  const response = await request(app)
+    .patch(`/categories/${category1._id}`)
+    .set("Authorization", `Bearer ${user.tokens[0].token}`)
+    .send({
+      name: "Nova",
+    });
+
+  expect(response.status).toBe(200);
+  const updatedCategory = await Category.findById(response.body._id);
+  expect(updatedCategory.name).toEqual("Nova");
+});
+
+test("Should delete a category", async () => {
+  const response = await request(app)
+    .delete(`/categories/${category1._id}`)
+    .set("Authorization", `Bearer ${user.tokens[0].token}`);
+
+  expect(response.status).toBe(200);
+  const updatedCategory = await Category.findById(response.body._id);
+  expect(updatedCategory).toBeNull();
 });
